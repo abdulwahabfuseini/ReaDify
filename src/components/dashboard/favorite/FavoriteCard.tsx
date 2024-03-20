@@ -1,93 +1,110 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { FavoriteBooksActions, selectFavoriteBooks } from "@/redux/FavoriteBooks";
+import { FavoriteBooksActions } from "@/redux/FavoriteBooks";
 import Image from "next/image";
-import { Button, Popconfirm } from "antd";
-import { useSession } from "next-auth/react";
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import { FaBookOpen, FaInfo, FaTrashAlt } from "react-icons/fa";
+import { ReadingBooksActions, selectReadingBooks } from "@/redux/ReadingBooks";
+import { BookType } from "@/contexts/Types";
+import BookDetails from "../BookDetails";
+import { Modal } from "antd";
 
-const FavoriteCard = () => {
-  const FavoriteBooks = useSelector(selectFavoriteBooks);
+const FavoriteCard = ({
+  id,
+  title,
+  imageLinks,
+  authors,
+  subtitle,
+  categories,
+  publishedDate,
+  description,
+  previewLink,
+}: BookType) => {
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenDetails = () => {
+    setOpenModal(true);
+  };
   const dispatch = useDispatch();
-  const { data: session } = useSession();
-  const router = useRouter();
 
-  const ClearBooks = () => {
-    dispatch(FavoriteBooksActions.clearFavorite());
-    toast.success("Favorite Cart Cleared Successfully");
+  const DeleteBooks = () => {
+    dispatch(FavoriteBooksActions.deleteFavorite(id));
+    toast.success("Book Deleted from Favorite");
   };
 
-  const cancel = () => {
-    toast.error("You Clicked on No");
+  const readingNow = useSelector(selectReadingBooks);
+  const isReading = readingNow.some((reading) => reading.id === id);
+
+  const handleToggleReading = () => {
+    if (isReading) {
+      dispatch(ReadingBooksActions.deleteReading(id));
+      toast.success("Book Removed from Reading Now");
+    } else {
+      dispatch(
+        ReadingBooksActions.addToReading({
+          id,
+          title,
+          imageLinks,
+          subtitle,
+          authors,
+          categories,
+          description,
+          publishedDate,
+          previewLink,
+          quantity: 0,
+        })
+      );
+      toast.success("Book Added to Reading Now");
+    }
   };
 
   return (
-    <div className="w-full">
-      <div>
-        {FavoriteBooks.length === 0 ? (
-          <div className="max-w-lg mx-auto grid place-items-center py-20 gap-y-4">
-            <h1 className=" text-center  text-xl font-semibold  ">
-              Your Favorite Cart is Empty! return to the home page, Search for a
-              book and added it to your favorite
-            </h1>
-            <Button
-              type="primary"
-              onClick={() => router.push("/")}
-              className="bg-green-600 font-semibold text-lg h-11"
-            >
-              Return Home
-            </Button>
-          </div>
-        ) : (
-          <div className="w-full">
-            <div className="flex items-center justify-between flex-wrap gap-3">
-              <h1 className="text-2xl font-semibold pb-4">Favorite Book(s)</h1>
-              <Popconfirm
-                title="Clear Your Favorite Cart"
-                description={`${session?.user?.name}, Are you sure want to clear your Favorite?`}
-                icon={
-                  <QuestionCircleOutlined
-                    style={{
-                      color: "red",
-                    }}
-                  />
-                }
-                onConfirm={ClearBooks}
-                onCancel={cancel}
-                color="#F1E6E6"
-                okText="Confirm"
-                cancelText="Cancel"
+    <div>
+      <div className=" border-2 sm:w-40 h-44 relative">
+        <Image
+          src={`/images/${imageLinks || "/images/pdf.png"}`}
+          fill
+          alt="cover"
+          quality={100}
+          loading="lazy"
+          className=" object-cover w-full"
+        />
+
+        <div className="absolute top-1 left-0 flex items-center gap-1.5">
+          <button className="bg-gray-300 p-1.5 rounded-full" onClick={handleOpenDetails}>
+            <FaInfo />
+           
+          </button>
+          {openModal && (
+              <Modal
+                open={openModal}
+                width={900}
+                onOk={() => setOpenModal(false)}
+                onCancel={() => setOpenModal(false)}
+                footer={[]}
               >
-                <Button
-                  danger
-                  type="primary"
-                  className="h-12 mb-2 text-lg border-2 rounded-lg bg-red-600"
-                >
-                  Clear Cart
-                </Button>
-              </Popconfirm>
-            </div>
-            <div className="grid grid-cols-2 sm:flex gap-2 flex-wrap justify-center sm:justify-start items-center  w-full my-6 mb-20">
-              {FavoriteBooks.map((favorite) => (
-                <div key={favorite.id} className="border-2">
-                  <Image
-                    src={`/images/${favorite?.imageLinks}`}
-                    width={150}
-                    height={250}
-                    alt="cover"
-                    quality={100}
-                    loading="lazy"
-                    objectFit="contain"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+                <BookDetails
+                  id={id}
+                  title={title}
+                  imageLinks={imageLinks}
+                  subtitle={subtitle}
+                  authors={authors}
+                  categories={categories}
+                  description={description}
+                  publishedDate={publishedDate}
+                  previewLink={previewLink}
+                />
+              </Modal>
+            )}
+          <button className="bg-gray-300 p-1.5 rounded-full" onClick={handleToggleReading}>
+            <FaBookOpen />
+          </button>
+          <button className="bg-gray-300 p-1.5 rounded-full" onClick={DeleteBooks}>
+            <FaTrashAlt />
+          </button>
+        </div>
       </div>
     </div>
   );

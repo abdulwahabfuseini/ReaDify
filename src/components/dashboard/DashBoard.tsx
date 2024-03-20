@@ -13,6 +13,8 @@ import Login from "@/app/(routes)/login/page";
 import { useSelector } from "react-redux";
 import { selectFavoriteBooks } from "@/redux/FavoriteBooks";
 import { selectReadingBooks } from "@/redux/ReadingBooks";
+import { selectReadBooks } from "@/redux/ReadBooks";
+
 
 const DashBoard = () => {
   const [toggle, setToggle] = useState(false);
@@ -22,7 +24,8 @@ const DashBoard = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const FavoriteBooks = useSelector(selectFavoriteBooks);
-  const ReadingBooks = useSelector(selectReadingBooks)
+  const ReadingBooks = useSelector(selectReadingBooks);
+  const ReadBooks = useSelector(selectReadBooks);
 
   useEffect(() => {
     if (filter == "favorite") {
@@ -42,13 +45,13 @@ const DashBoard = () => {
 
   return (
     <>
-      {!session?.user ? (
+      {session?.user ? (
         <div className="cursor-pointer flex ">
           {/* ==== Tablet & Large Screens ====  */}
           <aside
             className={`${
               toggle ? "w-16  " : "w-80"
-            }    relative h-screen hidden lg:block transition-all ease-lnear shadow-lg shadow-blue-500/40`}
+            }    relative h-screen hidden lg:block  shadow-lg shadow-blue-500/40`}
           >
             <button
               onClick={() => setToggle((prev) => !prev)}
@@ -88,7 +91,7 @@ const DashBoard = () => {
                 } border-t py-3 px-4 flex items-center text-lg gap-3 lg:gap-4 `}
               >
                 <Image
-                  src="/images/googlesvg.png"
+                  src="/images/heart.png"
                   alt="logo"
                   width={30}
                   height={30}
@@ -111,7 +114,7 @@ const DashBoard = () => {
                 } border-t py-3 px-4 flex items-center text-lg gap-3 lg:gap-4 w-full overflow-hidden`}
               >
                 <Image
-                  src="/images/reading.png"
+                  src="/images/open-book.png"
                   alt="logo"
                   width={30}
                   height={30}
@@ -144,7 +147,7 @@ const DashBoard = () => {
                   loading="eager"
                 />
                 <span className={`${toggle ? "hidden" : "block"} truncate`}>
-                  Have Read
+                  Have Read <span>({ReadBooks.length})</span>
                 </span>
               </button>
               <button
@@ -217,7 +220,7 @@ const DashBoard = () => {
                         } border-t py-3 px-4 flex items-center text-lg gap-3 lg:gap-4 `}
                       >
                         <Image
-                          src="/images/googlesvg.png"
+                          src="/images/heart.png"
                           alt="logo"
                           width={30}
                           height={30}
@@ -226,7 +229,9 @@ const DashBoard = () => {
                           className=" object-contain"
                           loading="eager"
                         />
-                        <span>Favorite <span>({FavoriteBooks.length})</span> </span>
+                        <span>
+                          Favorite <span>({FavoriteBooks.length})</span>{" "}
+                        </span>
                       </button>
                       <button
                         onClick={() => {
@@ -238,7 +243,7 @@ const DashBoard = () => {
                         } border-t py-3 px-4 flex items-center text-lg gap-3 lg:gap-4`}
                       >
                         <Image
-                          src="/images/reading.png"
+                          src="/images/open-book.png"
                           alt="logo"
                           width={30}
                           height={30}
@@ -247,7 +252,9 @@ const DashBoard = () => {
                           className=" object-contain"
                           loading="eager"
                         />
-                        <span>Reading Now <span>({ReadingBooks.length})</span></span>
+                        <span>
+                          Reading Now <span>({ReadingBooks.length})</span>
+                        </span>
                       </button>
                       <button
                         onClick={() => {
@@ -268,7 +275,9 @@ const DashBoard = () => {
                           className=" object-contain"
                           loading="eager"
                         />
-                        <span>Have Read</span>
+                        <span>
+                          Have Read <span>({ReadBooks.length})</span>
+                        </span>
                       </button>
                       <button
                         className=" my-20  w-full py-3  hover:bg-gray-200 flex items-center text-lg gap-3 lg:gap-4 px-4"

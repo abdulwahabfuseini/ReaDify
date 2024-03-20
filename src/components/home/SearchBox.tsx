@@ -51,7 +51,7 @@ const SearchBox = () => {
 
   return (
     <div>
-      <div className={`${ sticky ? "fixed top-16 lg:top-3 shadow-blue-500/20 bg-white shadow-lg lg:shadow-none lg:bg-transparent p-3 lg:p-0 left-0 right-0 z-50  sm:mx-0 sm:flex justify-center" : "absolute left-0 right-0 w-full px-3 sm:px-6 -bottom-6"}`}>
+      <div className={`${ sticky ? "fixed top-16 lg:top-3 shadow-blue-500/20 bg-white shadow-lg lg:shadow-none left-0 right-0 lg:bg-transparent p-3 lg:p-0 lg:left-[20vw] lg:right-[20vw] z-50  sm:mx-0 sm:flex justify-center" : "absolute left-0 right-0 w-full px-3 sm:px-6 -bottom-6"}`}>
         <form
           onSubmit={handleSubmit}
           className={`${sticky ? "shadow-none" : "shadow-xl" } flex sm:mx-auto sm:bg-white  backdrop:none sm:w-[79vw] border-2 border-yellow-400 lg:w-[50vw]`}

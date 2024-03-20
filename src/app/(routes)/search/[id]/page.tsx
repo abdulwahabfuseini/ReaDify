@@ -11,10 +11,14 @@ import { Typography } from "antd";
 import { useEffect, useState } from "react";
 import Buttons from "@/components/Buttons";
 import { useDispatch, useSelector } from "react-redux";
-import { FavoriteBooksActions, selectFavoriteBooks } from "@/redux/FavoriteBooks";
+import {
+  FavoriteBooksActions,
+  selectFavoriteBooks,
+} from "@/redux/FavoriteBooks";
 import toast from "react-hot-toast";
 import { ReadingBooksActions, selectReadingBooks } from "@/redux/ReadingBooks";
 import Link from "next/link";
+import { ReadBooksActions, selectReadBooks } from "@/redux/ReadBooks";
 
 const Book = ({ params }: any) => {
   const title = decodeURIComponent(params.id);
@@ -22,16 +26,28 @@ const Book = ({ params }: any) => {
     (book) => book.title.toLowerCase() === title.toLowerCase()
   );
 
-  const { id, imageLinks, authors, publishedDate, description, subtitle } =
-    book as {
-      id: number;
-      title: string;
-      subtitle: string;
-      publishedDate: string;
-      authors: string[];
-      imageLinks: string;
-      description: string;
-    };
+  const {
+    id,
+    imageLinks,
+    authors,
+    publishedDate,
+    description,
+    subtitle,
+    categories,
+    pageCount,
+    previewLink,
+  } = book as {
+    id: number;
+    title: string;
+    subtitle: string;
+    publishedDate: string;
+    authors: string[];
+    categories: string[];
+    pageCount: number;
+    imageLinks: string;
+    description: string;
+    previewLink: string;
+  };
 
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -44,16 +60,25 @@ const Book = ({ params }: any) => {
   const readingNow = useSelector(selectReadingBooks);
   const isReading = readingNow.some((reading) => reading.id === id);
 
+  const read = useSelector(selectReadBooks);
+  const isRead = read.some((read) => read.id === id);
+
   const handleToggleFavorite = () => {
     if (isFavorite) {
       dispatch(FavoriteBooksActions.deleteFavorite(id));
-      toast.success("Book Removed to Favorite");
+      toast.success("Book Removed from Favorite");
     } else {
       dispatch(
         FavoriteBooksActions.addToFavorite({
-          imageLinks,
           id,
           title,
+          imageLinks,
+          subtitle,
+          authors,
+          categories,
+          description,
+          publishedDate,
+          previewLink,
           quantity: 0,
         })
       );
@@ -64,18 +89,68 @@ const Book = ({ params }: any) => {
   const handleToggleReading = () => {
     if (isReading) {
       dispatch(ReadingBooksActions.deleteReading(id));
-      toast.success("Book Removed to Reading Now");
+      toast.success("Book Removed from Reading Now");
     } else {
       dispatch(
         ReadingBooksActions.addToReading({
-          imageLinks,
           id,
           title,
+          imageLinks,
+          subtitle,
+          authors,
+          categories,
+          description,
+          publishedDate,
+          previewLink,
           quantity: 0,
         })
       );
       toast.success("Book Added to Reading Now");
     }
+  };
+
+  const handleToggleRead = () => {
+    if (isRead) {
+      dispatch(ReadBooksActions.deleteRead(id));
+      toast.success("Book Removed from Read");
+    } else {
+      dispatch(
+        ReadBooksActions.addToRead({
+          id,
+          title,
+          imageLinks,
+          subtitle,
+          authors,
+          categories,
+          description,
+          publishedDate,
+          previewLink,
+          quantity: 0,
+        })
+      );
+      toast.success("Book Added to Read");
+    }
+  };
+  const splitIntoParagraphs = (text: string): string[] => {
+    const maxLength = 300; // Maximum characters per paragraph
+    const paragraphs: string[] = [];
+    let currentParagraph = "";
+
+    // Split text into paragraphs
+    text.split(" ").forEach((word) => {
+      if ((currentParagraph + word).length > maxLength) {
+        paragraphs.push(currentParagraph.trim());
+        currentParagraph = "";
+      }
+      currentParagraph += word + " ";
+    });
+
+    // Add the last paragraph
+    if (currentParagraph.trim() !== "") {
+      paragraphs.push(currentParagraph.trim());
+    }
+
+    return paragraphs;
   };
 
   useEffect(() => {
@@ -87,7 +162,7 @@ const Book = ({ params }: any) => {
   return (
     <>
       <Navbar />
-      <div className="grid max-w-6xl px-3 py-8 mx-auto md:py-14 sm:px-6 place-items-start gap-y-5">
+      <div className="grid max-w-6xl px-3 py-9 mx-auto md:py-20 lg:py-8 sm:px-6 place-items-start gap-y-5 mb-20">
         <button
           onClick={() => router.push("/")}
           type="button"
@@ -95,64 +170,79 @@ const Book = ({ params }: any) => {
         >
           <TbChevronLeft className="w-8 h-8" />
         </button>
-        <div className="py-8">
+        <div className="py-6">
           {loading ? (
             <h1 className="text-xl font-bold">Please Wait...</h1>
           ) : (
             <div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-y-8  gap-x-10 place-items-center">
-              <div className="w-80 h-72 sm:col-span-1 sm:h-96 relative">
-                <Image
-                  src={`/images/${imageLinks}`}
-                  // width={160}
-                  // height={160}
-                  fill
-                  alt="cover"
-                  quality={100}
-                  loading="lazy"
-                  objectFit="contain"
-                />
-              </div>
-              <div className="w-full sm:col-span-1 lg:col-span-2">
-                <h1 className="text-xl sm:text-2xl font-bold">{title}</h1>
-                <h4 className="font-semibold text-lg">{subtitle}</h4>
-                <div className=" font-bold text-sm py-1">
-                  <h1>
-                    author(s):{" "}
-                    <span className="text-slate-500">
-                      {authors.toLocaleString()}
-                    </span>
-                  </h1>
-                  <p>
-                    Published-Date:{" "}
-                    <span className="text-slate-400">{publishedDate}</span>{" "}
-                  </p>
-                </div>
-                <Typography.Paragraph
-                  // className="text-sm"
-                  ellipsis={{
-                    rows: 8,
-                    expandable: true,
-                    symbol: "Read Book",
-                  }}
-                >
-                  {description}
-                </Typography.Paragraph>
-                <div>
-                  <Buttons
-                    handleToggleFavorite={handleToggleFavorite}
-                    isFavorite={isFavorite}
-                    handleToggleReading={handleToggleReading}
-                    isReading={isReading}
+              <div className="grid sm:grid-cols-3 gap-y-8 gap-x-4 lg:gap-x-10 lg:place-items-center">
+                <div className="w-full h-72 sm:col-span-1 sm:h-[500px] relative order-2 sm:order-1">
+                  <Image
+                    src={`/images/${imageLinks}`}
+                    // width={160}
+                    // height={160}
+                    fill
+                    alt="cover"
+                    quality={100}
+                    loading="lazy"
+                    className=" object-contain sm:object-cover"
                   />
                 </div>
+                <div className="w-full sm:col-span-2 order-1 sm:order-2">
+                  <h1 className="text-2xl font-bold">{title}</h1>
+                  <h4 className=" text-lg">{subtitle}</h4>
+                  <div className=" font-bold text-sm py-1 text-blue-500">
+                    <h1>Author(s): {authors.toLocaleString()}</h1>
+                    <p>Published-Date: {publishedDate}</p>
+                  </div>
+                  <div className="py-1 flex items-center gap-6 flex-wrap">
+                    <h4 className="text-sm font-semibold">
+                      Categories:{" "}
+                      <span className="text-gray-500">{categories}</span>{" "}
+                    </h4>
+                    <h4 className="text-sm font-semibold">
+                      Page Count:{" "}
+                      <span className="text-gray-500">{pageCount}</span>{" "}
+                    </h4>
+                  </div>
+                  {/* <Link href="https://google.com" target={"_blank"}> */}
+                  <Typography.Paragraph
+                    className="text-base"
+                    ellipsis={{
+                      rows: 10,
+                    }}
+                  >
+                    {splitIntoParagraphs(description).map(
+                      (paragraph, index) => (
+                        <p key={index}>{paragraph}</p>
+                      )
+                    )}
+                  </Typography.Paragraph>
+                  {/* </Link> */}
+
+                  <div>
+                    <Buttons
+                      handleToggleFavorite={handleToggleFavorite}
+                      isFavorite={isFavorite}
+                      handleToggleReading={handleToggleReading}
+                      isReading={isReading}
+                      handleToggleRead={handleToggleRead}
+                      isRead={isRead}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-              <Link href="https://google.com" target={"_blank"}>
-                <button className="flex items-center justify-center py-6 hover:underline text-lg text-blue-400 w-full font-semibold hover:text-green-500">See Preview on Google Books</button>
+
+              <Link
+                href="https://google.com"
+                target={"_blank"}
+                className="flex items-center justify-center"
+              >
+                <button className=" py-10 hover:underline text-lg text-blue-400 font-semibold hover:text-green-500">
+                  See Preview on Google Books
+                </button>
               </Link>
             </div>
-
           )}
         </div>
       </div>

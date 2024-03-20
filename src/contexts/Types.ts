@@ -1,29 +1,32 @@
-export interface BookType {
-  id: number;
-  title: string;
-  imageLinks: string;
-  quantity: number;
-}
 
-export type BookProps = {
+
+export type BookType = {
   id: number;
-  title: string;
+  title?: string;
   subtitle?: string;
-  imageLinks: string;
+  imageLinks?: string;
   authors?: string[];
   publishedDate?: string;
   categories?: string[];
   pageCount?: number;
-  description: string;
+  description?: string;
   previewLink?: string;
-};
+  quantity?: number;
+}
 
-export type BooksCardProps = {
-  id: number;
-  title: string;
-  cover: string;
-  desc: string;
-};
+// export type BookProps = {
+//   id: number;
+//   title: string;
+//   subtitle?: string;
+//   imageLinks: string;
+//   authors?: string[];
+//   publishedDate?: string;
+//   categories?: string[];
+//   pageCount?: number;
+//   description?: string;
+//   previewLink?: string;
+// };
+
 
 export type FadeIn = {
   hidden: {

@@ -1,15 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./Store";
-
-interface FavoriteBookType {
-  id: number;
-  title: string;
-  imageLinks: string;
-  quantity: number;
-}
+import { BookType } from "@/contexts/Types";
 
 interface FavoriteBookState {
-  books: FavoriteBookType[];
+  books: BookType[];
 }
 
 const initialState: FavoriteBookState = {
@@ -21,7 +15,7 @@ const FavoriteBooks = createSlice({
   initialState,
   reducers: {
     // =====  Add To Favorite =====
-    addToFavorite: (state, action: PayloadAction<FavoriteBookType>) => {
+    addToFavorite: (state, action: PayloadAction<BookType>) => {
       const newBook = action.payload;
       const existingBook = state.books.find((book) => book.id === newBook.id);
 
@@ -51,7 +45,7 @@ const FavoriteBooks = createSlice({
 });
 
 // ==== Load Favorite From LocalStorage ====
-function loadFavoriteBooksFromLocalStorage(): FavoriteBookType[] {
+function loadFavoriteBooksFromLocalStorage(): BookType[] {
   if (typeof window === "undefined") {
     return [];
   }
@@ -61,7 +55,7 @@ function loadFavoriteBooksFromLocalStorage(): FavoriteBookType[] {
 }
 
 // ===== Save Favorite To LocalStorage ====
-function saveFavoriteBooksToLocalStorage(favorite: FavoriteBookType[]) {
+function saveFavoriteBooksToLocalStorage(favorite: BookType[]) {
   localStorage.setItem("favorite", JSON.stringify(favorite));
 }
 

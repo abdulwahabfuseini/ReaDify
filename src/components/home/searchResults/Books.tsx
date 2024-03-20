@@ -46,9 +46,7 @@ const Books = () => {
                 id={book.id}
                 title={book.title}
                 imageLinks={book.imageLinks}
-               
                 description={book.description}
-              
               />
             ))}
           </div>

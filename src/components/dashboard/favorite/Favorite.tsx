@@ -1,9 +1,9 @@
-import FavoriteCard from "./FavoriteCard";
+import FavBooks from "./FavBooks";
 
 const Favorite = () => {
   return (
     <div className="w-full">
-      <FavoriteCard />
+      <FavBooks />
     </div>
   );
 };

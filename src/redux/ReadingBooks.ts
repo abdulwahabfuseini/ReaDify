@@ -1,15 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./Store";
+import { BookType } from "@/contexts/Types";
 
-interface ReadingBookType {
-  id: number;
-  title: string;
-  imageLinks: string;
-  quantity: number;
-}
 
 interface ReadingBookState {
-  books: ReadingBookType[];
+  books: BookType[];
 }
 
 const initialState: ReadingBookState = {
@@ -21,7 +16,7 @@ const ReadingBooks = createSlice({
   initialState,
   reducers: {
     // =====  Add To Reading =====
-    addToReading: (state, action: PayloadAction<ReadingBookType>) => {
+    addToReading: (state, action: PayloadAction<BookType>) => {
       const newBook = action.payload;
       const existingBook = state.books.find((book) => book.id === newBook.id);
 
@@ -51,7 +46,7 @@ const ReadingBooks = createSlice({
 });
 
 // ==== Load Reading From LocalStorage ====
-function loadReadingBooksFromLocalStorage(): ReadingBookType[] {
+function loadReadingBooksFromLocalStorage(): BookType[] {
   if (typeof window === "undefined") {
     return [];
   }
@@ -61,7 +56,7 @@ function loadReadingBooksFromLocalStorage(): ReadingBookType[] {
 }
 
 // ===== Save Reading To LocalStorage ====
-function saveReadingBooksToLocalStorage(reading: ReadingBookType[]) {
+function saveReadingBooksToLocalStorage(reading: BookType[]) {
   localStorage.setItem("reading", JSON.stringify(reading));
 }
 

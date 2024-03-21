@@ -4,24 +4,21 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import {
-  FavoriteBooksActions,
-  selectFavoriteBooks,
-} from "@/redux/FavoriteBooks";
 import { Button, Popconfirm } from "antd";
 import { useSession } from "next-auth/react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import FavoriteCard from "./FavoriteCard";
+import ReadingCard from "./ReadingCard";
+import { ReadingBooksActions, selectReadingBooks } from "@/redux/ReadingBooks";
 
-const FavBooks = () => {
-  const FavoriteBooks = useSelector(selectFavoriteBooks);
+const NowBooks = () => {
+  const ReadingBooks = useSelector(selectReadingBooks);
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const router = useRouter();
 
   const ClearBooks = () => {
-    dispatch(FavoriteBooksActions.clearFavorite());
-    toast.success("Favorite Cart Cleared Successfully");
+    dispatch(ReadingBooksActions.clearReading());
+    toast.success("Reading Now Cart Cleared Successfully");
   };
 
   const cancel = () => {
@@ -31,11 +28,11 @@ const FavBooks = () => {
   return (
     <div className="w-full">
       <div>
-        {FavoriteBooks.length === 0 ? (
+        {ReadingBooks.length === 0 ? (
           <div className="max-w-lg mx-auto grid place-items-center py-20 gap-y-4">
             <h1 className=" text-center  text-xl font-semibold  ">
-              Your Favorite Cart is Empty! return to the home page, Search for a
-              book and added it to your favorite
+              Your Reading Now Cart is Empty! return to the home page, Search for a
+              book and added it to your reading
             </h1>
             <Button
               type="primary"
@@ -48,10 +45,10 @@ const FavBooks = () => {
         ) : (
           <div className="w-full">
             <div className="flex items-center justify-between flex-wrap gap-3">
-              <h1 className="text-2xl font-semibold pb-4">Favorite Book(s)</h1>
+              <h1 className="text-2xl font-semibold pb-4">Reading Now Book(s)</h1>
               <Popconfirm
-                title="Clear Your Favorite Cart"
-                description={`${session?.user?.name}, Are you sure want to clear your Favorite?`}
+                title="Clear Your Reading Now Cart"
+                description={`${session?.user?.name}, Are you sure want to clear your Reading Now?`}
                 icon={
                   <QuestionCircleOutlined
                     style={{
@@ -75,20 +72,20 @@ const FavBooks = () => {
                 </Button>
               </Popconfirm>
             </div>
-            <div className="grid grid-cols-2 sm:flex gap-y-4 flex-wrap justify-center sm:justify-start items-center  w-full my-6 mb-20">
-              {FavoriteBooks.map((favorite) => (
-                <FavoriteCard
-                  key={favorite?.id}
-                  id={favorite?.id}
-                  title={favorite?.title}
-                  subtitle={favorite?.subtitle}
-                  imageLinks={favorite?.imageLinks}
-                  authors={favorite?.authors}
-                  categories={favorite?.categories}
-                  pageCount={favorite?.pageCount}
-                  description={favorite?.description}
-                  publishedDate={favorite?.publishedDate}
-                  previewLink={favorite?.previewLink}
+            <div className="grid grid-cols-2 gap-y-4 sm:flex gap-2 flex-wrap justify-center sm:justify-start items-center  w-full my-6 mb-20">
+              {ReadingBooks.map((reading) => (
+                <ReadingCard
+                  key={reading?.id}
+                  id={reading?.id}
+                  title={reading?.title}
+                  subtitle={reading?.subtitle}
+                  imageLinks={reading?.imageLinks}
+                  authors={reading?.authors}
+                  categories={reading?.categories}
+                  pageCount={reading?.pageCount}
+                  description={reading?.description}
+                  publishedDate={reading?.publishedDate}
+                  previewLink={reading?.previewLink}
                 />
               ))}
             </div>
@@ -99,4 +96,4 @@ const FavBooks = () => {
   );
 };
 
-export default FavBooks;
+export default NowBooks;

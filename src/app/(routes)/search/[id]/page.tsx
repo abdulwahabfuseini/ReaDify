@@ -66,7 +66,7 @@ const Book = ({ params }: any) => {
   const handleToggleFavorite = () => {
     if (isFavorite) {
       dispatch(FavoriteBooksActions.deleteFavorite(id));
-      toast.success("Book Removed from Favorite");
+      toast.error("Book Removed from Favorite");
     } else {
       dispatch(
         FavoriteBooksActions.addToFavorite({
@@ -76,6 +76,7 @@ const Book = ({ params }: any) => {
           subtitle,
           authors,
           categories,
+          pageCount,
           description,
           publishedDate,
           previewLink,
@@ -89,8 +90,13 @@ const Book = ({ params }: any) => {
   const handleToggleReading = () => {
     if (isReading) {
       dispatch(ReadingBooksActions.deleteReading(id));
-      toast.success("Book Removed from Reading Now");
+      toast.error("Book Removed from Reading Now");
     } else {
+      // Remove the book from the read list if it's already there
+      if (isRead) {
+        dispatch(ReadBooksActions.deleteRead(id));
+        toast.error("Book Removed from Read");
+      }
       dispatch(
         ReadingBooksActions.addToReading({
           id,
@@ -99,6 +105,7 @@ const Book = ({ params }: any) => {
           subtitle,
           authors,
           categories,
+          pageCount,
           description,
           publishedDate,
           previewLink,
@@ -112,8 +119,12 @@ const Book = ({ params }: any) => {
   const handleToggleRead = () => {
     if (isRead) {
       dispatch(ReadBooksActions.deleteRead(id));
-      toast.success("Book Removed from Read");
+      toast.error("Book Removed from Read");
     } else {
+      if (isReading) {
+        dispatch(ReadingBooksActions.deleteReading(id));
+        toast.error("Book Removed from Reading Now");
+      }
       dispatch(
         ReadBooksActions.addToRead({
           id,
@@ -122,6 +133,7 @@ const Book = ({ params }: any) => {
           subtitle,
           authors,
           categories,
+          pageCount,
           description,
           publishedDate,
           previewLink,
@@ -130,27 +142,6 @@ const Book = ({ params }: any) => {
       );
       toast.success("Book Added to Read");
     }
-  };
-  const splitIntoParagraphs = (text: string): string[] => {
-    const maxLength = 300; // Maximum characters per paragraph
-    const paragraphs: string[] = [];
-    let currentParagraph = "";
-
-    // Split text into paragraphs
-    text.split(" ").forEach((word) => {
-      if ((currentParagraph + word).length > maxLength) {
-        paragraphs.push(currentParagraph.trim());
-        currentParagraph = "";
-      }
-      currentParagraph += word + " ";
-    });
-
-    // Add the last paragraph
-    if (currentParagraph.trim() !== "") {
-      paragraphs.push(currentParagraph.trim());
-    }
-
-    return paragraphs;
   };
 
   useEffect(() => {
@@ -166,7 +157,7 @@ const Book = ({ params }: any) => {
         <button
           onClick={() => router.push("/")}
           type="button"
-          className=" p-1 font-semibold text-center bg-gray-200  mx-1 light-background rounded-full"
+          className=" p-1 font-semibold text-center bg-gray-200  mx-1 rounded-full"
         >
           <TbChevronLeft className="w-8 h-8" />
         </button>
@@ -178,21 +169,20 @@ const Book = ({ params }: any) => {
               <div className="grid sm:grid-cols-3 gap-y-8 gap-x-4 lg:gap-x-10 lg:place-items-center">
                 <div className="w-full h-72 sm:col-span-1 sm:h-[500px] relative order-2 sm:order-1">
                   <Image
-                    src={`/images/${imageLinks}`}
-                    // width={160}
-                    // height={160}
-                    fill
+                    src={`/images/${imageLinks || "pdf.png"}`}
+                    layout="fill"
                     alt="cover"
                     quality={100}
+                    objectPosition="center"
+                    objectFit="contain"
                     loading="lazy"
-                    className=" object-contain sm:object-cover"
                   />
                 </div>
                 <div className="w-full sm:col-span-2 order-1 sm:order-2">
                   <h1 className="text-2xl font-bold">{title}</h1>
                   <h4 className=" text-lg">{subtitle}</h4>
                   <div className=" font-bold text-sm py-1 text-blue-500">
-                    <h1>Author(s): {authors.toLocaleString()}</h1>
+                    <h1>Author(s): {authors.map(String).join(", ")}</h1>
                     <p>Published-Date: {publishedDate}</p>
                   </div>
                   <div className="py-1 flex items-center gap-6 flex-wrap">
@@ -205,20 +195,17 @@ const Book = ({ params }: any) => {
                       <span className="text-gray-500">{pageCount}</span>{" "}
                     </h4>
                   </div>
-                  {/* <Link href="https://google.com" target={"_blank"}> */}
+
                   <Typography.Paragraph
                     className="text-base"
                     ellipsis={{
                       rows: 10,
                     }}
                   >
-                    {splitIntoParagraphs(description).map(
-                      (paragraph, index) => (
-                        <p key={index}>{paragraph}</p>
-                      )
-                    )}
+                    {description.split(". ").map((paragraph, index) => (
+                      <p key={index}>{paragraph}</p>
+                    ))}
                   </Typography.Paragraph>
-                  {/* </Link> */}
 
                   <div>
                     <Buttons

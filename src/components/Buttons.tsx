@@ -15,8 +15,8 @@ const Buttons = ({
       <button
         onClick={handleToggleFavorite}
         className={`${
-          isFavorite ? "bg-red-200 font-semibold text-white" : ""
-        } flex items-center gap-1 p-1.5 rounded hover:bg-green-500 hover:text-white border-2`}
+          isFavorite ? "red-background font-semibold text-white" : ""
+        } flex items-center gap-1 p-2 rounded-lg hover:ring-2  border-2`}
       >
         <Image
           src="/images/heart.png"
@@ -33,8 +33,8 @@ const Buttons = ({
       <button
         onClick={handleToggleReading}
         className={`${
-          isReading ? "bg-blue-200 font-semibold text-white" : ""
-        } flex items-center gap-1 p-1.5 rounded hover:bg-green-500 hover:text-white border-2`}
+          isReading ? "black-background font-semibold text-white" : ""
+        } flex items-center gap-1 p-2 rounded-lg hover:ring-2  border-2`}
       >
         <Image
           src="/images/open-book.png"
@@ -51,8 +51,8 @@ const Buttons = ({
       <button
         onClick={handleToggleRead}
         className={`${
-          isRead ? "bg-green-200 font-semibold text-white" : ""
-        } flex items-center gap-1 p-1.5 rounded hover:bg-green-500 hover:text-white border-2`}
+          isRead ? "green-background font-semibold text-white" : ""
+        } flex items-center gap-1 p-2 rounded-lg hover:ring-2  border-2`}
       >
         <Image
           src="/images/check.png"

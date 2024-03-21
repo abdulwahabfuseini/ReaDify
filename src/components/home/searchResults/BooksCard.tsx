@@ -9,20 +9,22 @@ const BooksCard = ({ title, description, imageLinks }: BookType) => {
   return (
     <div>
       <Link href={`/search/${title}`}>
-        <div className="flex flex-col items-center justify-center gap-4 border-2 p-2">
-          <Image
-            src={`/images/${imageLinks || "/images/pdf.png"}`}
-            width={160}
-            height={160}
+        <div className="flex flex-col gap-y-2 hover:scale-110 p-2">
+        <div className="w-full h-44 relative">
+        <Image
+            src={`/images/${imageLinks || "pdf.png"}`}
+           fill
             alt="cover"
             quality={100}
             loading="lazy"
             objectFit="contain"
+          
           />
+        </div>
           <div>
-            <h1 className="font-semibold text-center">{title}</h1>
+            <h1 className="font-semibold text-center text-sm">{title}</h1>
 
-            <Typography.Paragraph
+            {/* <Typography.Paragraph
               className="text-sm"
               ellipsis={{
                 rows: 2,
@@ -31,7 +33,7 @@ const BooksCard = ({ title, description, imageLinks }: BookType) => {
               }}
             >
               {description}
-            </Typography.Paragraph>
+            </Typography.Paragraph> */}
           </div>
         </div>
       </Link>

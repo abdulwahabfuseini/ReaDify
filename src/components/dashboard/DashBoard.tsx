@@ -20,7 +20,6 @@ const DashBoard = () => {
   const [toggle, setToggle] = useState(false);
   const [filter, setFilter] = useState("favorite");
   const [content, setContent] = useState(Favorite);
-  const [loading, setLoading] = useState(true);
   const { data: session } = useSession();
   const router = useRouter();
   const FavoriteBooks = useSelector(selectFavoriteBooks);
@@ -37,10 +36,6 @@ const DashBoard = () => {
     if (filter == "reading Now") {
       setContent(ReadingNow);
     }
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
   }, [filter]);
 
   return (
@@ -51,7 +46,7 @@ const DashBoard = () => {
           <aside
             className={`${
               toggle ? "w-16  " : "w-80"
-            }    relative h-screen hidden lg:block  shadow-lg shadow-blue-500/40`}
+            }    relative h-screen hidden lg:block  shadow shadow-blue-500/40`}
           >
             <button
               onClick={() => setToggle((prev) => !prev)}
@@ -87,8 +82,8 @@ const DashBoard = () => {
                   setToggle(false);
                 }}
                 className={`${
-                  filter === "favorite" ? "activeBtn" : ""
-                } border-t py-3 px-4 flex items-center text-lg gap-3 lg:gap-4 `}
+                  filter === "favorite" ? "activeBtn relative before:contents() before:absolute before:left-0 before:top before:w-1 before:h-full before:bg-green-400" : ""
+                } border-t py-3 px-4 flex items-center text-lg gap-3 lg:gap-4 hover:bg-gray-50 `}
               >
                 <Image
                   src="/images/heart.png"
@@ -110,8 +105,8 @@ const DashBoard = () => {
                   setToggle(false);
                 }}
                 className={`${
-                  filter === "reading Now" ? "activeBtn" : ""
-                } border-t py-3 px-4 flex items-center text-lg gap-3 lg:gap-4 w-full overflow-hidden`}
+                  filter === "reading Now" ? "activeBtn relative before:contents() before:absolute before:left-0 before:top before:w-1 before:h-full before:bg-green-400" : ""
+                } border-t py-3 px-4 flex items-center text-lg gap-3 lg:gap-4 hover:bg-gray-50 w-full overflow-hidden`}
               >
                 <Image
                   src="/images/open-book.png"
@@ -133,8 +128,8 @@ const DashBoard = () => {
                   setToggle(false);
                 }}
                 className={`${
-                  filter === "have Read" ? "activeBtn" : ""
-                } border-t border-b py-3  flex items-center text-lg gap-3 lg:gap-4 px-4 w-full overflow-hidden`}
+                  filter === "have Read" ? "activeBtn relative before:contents() before:absolute before:left-0 before:top before:w-1 before:h-full before:bg-green-400" : ""
+                } border-t border-b py-3  flex items-center text-lg gap-3 lg:gap-4 hover:bg-gray-50 px-4 w-full overflow-hidden`}
               >
                 <Image
                   src="/images/check.png"
@@ -151,7 +146,7 @@ const DashBoard = () => {
                 </span>
               </button>
               <button
-                className=" my-20  w-full py-3  hover:bg-gray-200 flex items-center text-lg gap-3 lg:gap-4 px-4"
+                className=" my-20  w-full py-3 hover:bg-gray-200 flex items-center text-lg gap-3 lg:gap-4 px-4"
                 onClick={() => {
                   signOut();
                   router.push("/");
@@ -216,8 +211,8 @@ const DashBoard = () => {
                           setToggle(false);
                         }}
                         className={`${
-                          filter === "favorite" ? "activeBtn" : ""
-                        } border-t py-3 px-4 flex items-center text-lg gap-3 lg:gap-4 `}
+                          filter === "favorite" ? "activeBtn relative before:contents() before:absolute before:left-0 before:top before:w-1 before:h-full before:bg-green-400" : ""
+                        } border-t py-3 px-4 flex items-center text-lg gap-3 lg:gap-4 hover:bg-gray-50 `}
                       >
                         <Image
                           src="/images/heart.png"
@@ -239,8 +234,8 @@ const DashBoard = () => {
                           setToggle(false);
                         }}
                         className={`${
-                          filter === "reading Now" ? "activeBtn" : ""
-                        } border-t py-3 px-4 flex items-center text-lg gap-3 lg:gap-4`}
+                          filter === "reading Now" ? "activeBtn relative before:contents() before:absolute before:left-0 before:top before:w-1 before:h-full before:bg-green-400" : ""
+                        } border-t py-3 px-4 flex items-center text-lg gap-3 lg:gap-4 hover:bg-gray-50`}
                       >
                         <Image
                           src="/images/open-book.png"
@@ -262,8 +257,8 @@ const DashBoard = () => {
                           setToggle(false);
                         }}
                         className={`${
-                          filter === "have Read" ? "activeBtn" : ""
-                        } border-t border-b py-3  flex items-center text-lg gap-3 lg:gap-4 px-4`}
+                          filter === "have Read" ? "activeBtn relative before:contents() before:absolute before:left-0 before:top before:w-1 before:h-full before:bg-green-400" : ""
+                        } border-t border-b py-3  flex items-center text-lg gap-3 lg:gap-4 hover:bg-gray-50 px-4`}
                       >
                         <Image
                           src="/images/check.png"
@@ -280,7 +275,7 @@ const DashBoard = () => {
                         </span>
                       </button>
                       <button
-                        className=" my-20  w-full py-3  hover:bg-gray-200 flex items-center text-lg gap-3 lg:gap-4 px-4"
+                        className=" my-20  w-full py-3  hover:bg-gray-200 flex items-center text-lg gap-3 lg:gap-4  px-4"
                         onClick={() => {
                           signOut();
                           router.push("/");
@@ -305,11 +300,7 @@ const DashBoard = () => {
               )}
             </div>
             <div>
-              {loading ? (
-                <h1 className="text-2xl font-semibold">Please Wait...</h1>
-              ) : (
-                <div>{content}</div>
-              )}
+            <div>{content}</div>
             </div>
           </main>
         </div>

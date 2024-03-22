@@ -1,12 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import {
-  FavoriteBooksActions,
-  selectFavoriteBooks,
-} from "@/redux/FavoriteBooks";
+import { FavoriteBooksActions } from "@/redux/FavoriteBooks";
 import Image from "next/image";
 import { FaInfo } from "react-icons/fa";
 import { ReadingBooksActions, selectReadingBooks } from "@/redux/ReadingBooks";
@@ -29,6 +26,13 @@ const FavoriteCard = ({
 }: BookType) => {
   const [popUp, setPopUp] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, [isLoading]);
 
   const handleOpenDetails = () => {
     setOpenModal(true);
@@ -45,8 +49,6 @@ const FavoriteCard = ({
     dispatch(FavoriteBooksActions.deleteFavorite(id));
     toast.success("Book Deleted from Favorite");
   };
-
-
 
   const read = useSelector(selectReadBooks);
   const isRead = read.some((read) => read.id === id);
@@ -112,15 +114,19 @@ const FavoriteCard = ({
 
   return (
     <div className="grid gap-2">
-      <div className="w-full h-44 relative">
-        <Image
-          src={`/images/${imageLinks || "pdf.png"}`}
-          fill
-          alt="cover"
-          quality={100}
-          loading="lazy"
-          className=" object-contain w-full"
-        />
+      <div className="w-full h-44 relative mr-3">
+        {isLoading ? (
+          <div className="image-placeholder sm:w-36"></div>
+        ) : (
+          <Image
+            src={`/images/${imageLinks || "pdf.png"}`}
+            fill
+            alt="cover"
+            quality={100}
+            loading="lazy"
+            objectFit="contain"
+          />
+        )}
 
         <div className="absolute top-2 right-8 gap-2">
           <Popover
@@ -204,7 +210,7 @@ const FavoriteCard = ({
           {openModal && (
             <Modal
               open={openModal}
-              width={900}
+              width={700}
               onOk={() => setOpenModal(false)}
               onCancel={() => setOpenModal(false)}
               footer={[]}
@@ -225,7 +231,11 @@ const FavoriteCard = ({
           )}
         </div>
       </div>
-      <h1 className="w-40 text-center  text-sm font-semibold">{title}</h1>
+      {isLoading ? (
+        <div className="title-placeholder w-36"></div>
+      ) : (
+        <h1 className="font-semibold text-center w-40 text-sm">{title}</h1>
+      )}
     </div>
   );
 };

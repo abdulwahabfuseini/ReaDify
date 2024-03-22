@@ -18,7 +18,7 @@ const NowBooks = () => {
 
   const ClearBooks = () => {
     dispatch(ReadingBooksActions.clearReading());
-    toast.success("Reading Now Cart Cleared Successfully");
+    toast.success("Reading Now List Cleared Successfully");
   };
 
   const cancel = () => {
@@ -31,8 +31,8 @@ const NowBooks = () => {
         {ReadingBooks.length === 0 ? (
           <div className="max-w-lg mx-auto grid place-items-center py-20 gap-y-4">
             <h1 className=" text-center  text-xl font-semibold  ">
-              Your Reading Now Cart is Empty! return to the home page, Search for a
-              book and added it to your reading
+              Your Reading Now List is Empty! click on favorite on the sidebar to add a book or return to the home page, Search for a
+              book and added it to your Reading Now List.
             </h1>
             <Button
               type="primary"
@@ -47,8 +47,8 @@ const NowBooks = () => {
             <div className="flex items-center justify-between flex-wrap gap-3">
               <h1 className="text-2xl font-semibold pb-4">Reading Now Book(s)</h1>
               <Popconfirm
-                title="Clear Your Reading Now Cart"
-                description={`${session?.user?.name}, Are you sure want to clear your Reading Now?`}
+                title="Clear Your Reading Now List"
+                description={`${session?.user?.name}, Are you sure want to clear your Reading Now List?`}
                 icon={
                   <QuestionCircleOutlined
                     style={{
@@ -68,7 +68,7 @@ const NowBooks = () => {
                   type="primary"
                   className="h-10 font-semibold mb-2 text-lg border-2 rounded-lg bg-red-600"
                 >
-                  Clear Cart
+                  Clear List
                 </Button>
               </Popconfirm>
             </div>

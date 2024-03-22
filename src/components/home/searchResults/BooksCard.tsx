@@ -1,28 +1,43 @@
+"use client";
 
 import { BookType } from "@/contexts/Types";
-import { Typography } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const BooksCard = ({ title, description, imageLinks }: BookType) => {
+const BooksCard = ({ title, imageLinks }: BookType) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  }, [isLoading]);
+
   return (
     <div>
       <Link href={`/search/${title}`}>
         <div className="flex flex-col gap-y-2 hover:scale-110 p-2">
-        <div className="w-full h-44 relative">
-        <Image
-            src={`/images/${imageLinks || "pdf.png"}`}
-           fill
-            alt="cover"
-            quality={100}
-            loading="lazy"
-            objectFit="contain"
-          
-          />
-        </div>
+          <div className="w-full h-44 relative">
+            {isLoading ? (
+              <div className="image-placeholder w-full"></div>
+            ) : (
+              <Image
+                src={`/images/${imageLinks || "pdf.png"}`}
+                fill
+                alt="cover"
+                quality={100}
+                loading="lazy"
+                objectFit="contain"
+              />
+            )}
+          </div>
           <div>
-            <h1 className="font-semibold text-center text-sm">{title}</h1>
+            {isLoading ? (
+              <div className="title-placeholder"></div>
+            ) : (
+              <h1 className="font-semibold text-center text-sm">{title}</h1>
+            )}
 
             {/* <Typography.Paragraph
               className="text-sm"

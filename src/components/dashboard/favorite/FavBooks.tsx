@@ -21,7 +21,7 @@ const FavBooks = () => {
 
   const ClearBooks = () => {
     dispatch(FavoriteBooksActions.clearFavorite());
-    toast.success("Favorite Cart Cleared Successfully");
+    toast.success("Favorite List Cleared Successfully");
   };
 
   const cancel = () => {
@@ -34,8 +34,8 @@ const FavBooks = () => {
         {FavoriteBooks.length === 0 ? (
           <div className="max-w-lg mx-auto grid place-items-center py-20 gap-y-4">
             <h1 className=" text-center  text-xl font-semibold  ">
-              Your Favorite Cart is Empty! return to the home page, Search for a
-              book and added it to your favorite
+              Your Favorite List is Empty! click on Reading Now, Have Read on the sidebar to add a book or return to the home page, Search for a
+              book and added it to your Favorite List
             </h1>
             <Button
               type="primary"
@@ -50,8 +50,8 @@ const FavBooks = () => {
             <div className="flex items-center justify-between flex-wrap gap-3">
               <h1 className="text-2xl font-semibold pb-4">Favorite Book(s)</h1>
               <Popconfirm
-                title="Clear Your Favorite Cart"
-                description={`${session?.user?.name}, Are you sure want to clear your Favorite?`}
+                title="Clear Your Favorite List"
+                description={`${session?.user?.name}, Are you sure want to clear your Favorite List?`}
                 icon={
                   <QuestionCircleOutlined
                     style={{
@@ -71,11 +71,11 @@ const FavBooks = () => {
                   type="primary"
                   className="h-10 font-semibold mb-2 text-lg border-2 rounded-lg bg-red-600"
                 >
-                  Clear Cart
+                  Clear List
                 </Button>
               </Popconfirm>
             </div>
-            <div className="grid grid-cols-2 sm:flex gap-y-4 flex-wrap justify-center sm:justify-start items-center  w-full my-6 mb-20">
+            <div className="grid grid-cols-2 place-items-center sm:flex gap-y-4 flex-wrap justify-center sm:justify-start items-center  w-full my-6 mb-20">
               {FavoriteBooks.map((favorite) => (
                 <FavoriteCard
                   key={favorite?.id}

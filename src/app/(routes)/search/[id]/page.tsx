@@ -147,7 +147,7 @@ const Book = ({ params }: any) => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 100);
+    }, 600);
   }, [loading]);
 
   return (
@@ -173,8 +173,7 @@ const Book = ({ params }: any) => {
                     layout="fill"
                     alt="cover"
                     quality={100}
-                    objectPosition="center"
-                    objectFit="contain"
+                    className=" object-contain s"
                     loading="lazy"
                   />
                 </div>
@@ -197,16 +196,23 @@ const Book = ({ params }: any) => {
                   </div>
 
                   <Typography.Paragraph
+                    // key={index}
                     className="text-base"
                     ellipsis={{
                       rows: 10,
                     }}
                   >
-                    {description.split(". ").map((paragraph, index) => (
-                      <p key={index}>{paragraph}</p>
-                    ))}
+                    {description}
                   </Typography.Paragraph>
-
+                  <Link
+                    href="https://google.com"
+                    target={"_blank"}
+                    className="flex items-center justify-center"
+                  >
+                    <button className=" pb-3 hover:underline text-lg text-blue-400 font-semibold hover:text-green-500">
+                      See Preview on Google Books
+                    </button>
+                  </Link>
                   <div>
                     <Buttons
                       handleToggleFavorite={handleToggleFavorite}
@@ -219,16 +225,6 @@ const Book = ({ params }: any) => {
                   </div>
                 </div>
               </div>
-
-              <Link
-                href="https://google.com"
-                target={"_blank"}
-                className="flex items-center justify-center"
-              >
-                <button className=" py-10 hover:underline text-lg text-blue-400 font-semibold hover:text-green-500">
-                  See Preview on Google Books
-                </button>
-              </Link>
             </div>
           )}
         </div>

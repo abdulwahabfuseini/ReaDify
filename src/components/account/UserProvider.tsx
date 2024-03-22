@@ -35,7 +35,7 @@ const UserProvider = () => {
 
       <button
         onClick={() => signIn("google")}
-        className="flex items-center gap-5 justify-center w-full bg-red-200 text-white px-4 py-2 border text-lg font-semibold rounded-lg"
+        className="flex items-center gap-5 justify-center w-full bg-red-300 text-white px-4 py-2 border text-lg font-semibold rounded-lg"
       >
         <Image
           src="/images/googlesvg.png"

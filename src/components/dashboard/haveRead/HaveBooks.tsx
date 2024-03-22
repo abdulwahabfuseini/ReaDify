@@ -18,7 +18,7 @@ const HaveBook = () => {
 
   const ClearBooks = () => {
     dispatch(ReadBooksActions.clearRead());
-    toast.success("Read Cart Cleared Successfully");
+    toast.success("Read List Cleared Successfully");
   };
 
   const cancel = () => {
@@ -31,24 +31,24 @@ const HaveBook = () => {
         {ReadBooks.length === 0 ? (
           <div className="max-w-lg mx-auto grid place-items-center py-20 gap-y-4">
             <h1 className=" text-center  text-xl font-semibold  ">
-              Your have read Cart is Empty! return to the home page, Search for
-              a book and added it to your have read
+              Your Have Read List is Empty! Click on Favorite or Reading Now on the sidebar, select 
+              a book and added it to your Have Read List.
             </h1>
-            <Button
+            {/* <Button
               type="primary"
               onClick={() => router.push("/")}
               className="bg-green-600 font-semibold text-lg h-11"
             >
               Return Home
-            </Button>
+            </Button> */}
           </div>
         ) : (
           <div className="w-full">
             <div className="flex items-center justify-between flex-wrap gap-3">
               <h1 className="text-2xl font-semibold pb-4">Have Read Book(s)</h1>
               <Popconfirm
-                title="Clear Your Have Read Cart"
-                description={`${session?.user?.name}, Are you sure want to clear your Have Read?`}
+                title="Clear Your Have Read List"
+                description={`${session?.user?.name}, Are you sure want to clear your Have Read List?`}
                 icon={
                   <QuestionCircleOutlined
                     style={{
@@ -68,7 +68,7 @@ const HaveBook = () => {
                   type="primary"
                   className="h-10 font-semibold mb-2 text-lg border-2 rounded-lg bg-red-600"
                 >
-                  Clear Cart
+                  Clear List
                 </Button>
               </Popconfirm>
             </div>

@@ -31,8 +31,8 @@ const HaveBook = () => {
         {ReadBooks.length === 0 ? (
           <div className="max-w-lg mx-auto grid place-items-center py-20 gap-y-4">
             <h1 className=" text-center  text-xl font-semibold  ">
-              Your Have Read List is Empty! Click on Favorite or Reading Now on the sidebar, select 
-              a book and added it to your Have Read List.
+              Your Have Read List is Empty! Click on Favorite or Reading Now on
+              the sidebar, select a book and added it to your Have Read List.
             </h1>
             {/* <Button
               type="primary"
@@ -77,15 +77,7 @@ const HaveBook = () => {
                 <ReadCard
                   key={read?.id}
                   id={read?.id}
-                  title={read?.title}
-                  subtitle={read?.subtitle}
-                  imageLinks={read?.imageLinks}
-                  authors={read?.authors}
-                  categories={read?.categories}
-                  pageCount={read?.pageCount}
-                  description={read?.description}
-                  publishedDate={read?.publishedDate}
-                  previewLink={read?.previewLink}
+                  volumeInfo={read?.volumeInfo}
                 />
               ))}
             </div>

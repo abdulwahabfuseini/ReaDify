@@ -17,15 +17,17 @@ import { ReadBooksActions, selectReadBooks } from "@/redux/ReadBooks";
 
 const ReadingCard = ({
   id,
-  title,
-  imageLinks,
-  authors,
-  subtitle,
-  categories,
-  pageCount,
-  publishedDate,
-  description,
-  previewLink,
+  volumeInfo: {
+    title,
+    subtitle,
+    authors,
+    categories,
+    pageCount,
+    publishedDate,
+    description,
+    previewLink,
+    imageLinks,
+  },
 }: BookType) => {
   const [popUp, setPopUp] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -70,15 +72,17 @@ const ReadingCard = ({
       dispatch(
         FavoriteBooksActions.addToFavorite({
           id,
-          title,
-          imageLinks,
-          subtitle,
-          authors,
-          categories,
-          pageCount,
-          description,
-          publishedDate,
-          previewLink,
+          volumeInfo: {
+            title,
+            subtitle,
+            authors,
+            categories,
+            pageCount,
+            publishedDate,
+            description,
+            previewLink,
+            imageLinks,
+          },
           quantity: 0,
         })
       );
@@ -98,15 +102,17 @@ const ReadingCard = ({
       dispatch(
         ReadBooksActions.addToRead({
           id,
-          title,
-          imageLinks,
-          subtitle,
-          authors,
-          categories,
-          pageCount,
-          description,
-          publishedDate,
-          previewLink,
+          volumeInfo: {
+            title,
+            subtitle,
+            authors,
+            categories,
+            pageCount,
+            publishedDate,
+            description,
+            previewLink,
+            imageLinks,
+          },
           quantity: 0,
         })
       );
@@ -120,14 +126,18 @@ const ReadingCard = ({
         {isLoading ? (
           <div className="image-placeholder sm:w-36"></div>
         ) : (
-          <Image
-            src={`/images/${imageLinks || "pdf.png"}`}
-            fill
-            alt="cover"
-            quality={100}
-            loading="lazy"
-            objectFit="contain"
-          />
+          <div className=" sm:w-36 h-44 relative">
+            {imageLinks && imageLinks.thumbnail && (
+              <Image
+                src={imageLinks.thumbnail || "/images/pdf.png"}
+                alt={title || ""}
+                fill
+                quality={100}
+                loading="lazy"
+                objectFit="contain"
+              />
+            )}
+          </div>
         )}
 
         <div className="absolute top-2 right-8 gap-2">
@@ -218,16 +228,18 @@ const ReadingCard = ({
               footer={[]}
             >
               <BookDetails
-                id={id}
-                title={title}
-                imageLinks={imageLinks}
-                subtitle={subtitle}
-                authors={authors}
-                categories={categories}
-                pageCount={pageCount}
-                description={description}
-                publishedDate={publishedDate}
-                previewLink={previewLink}
+                volumeInfo={{
+                  title,
+                  subtitle,
+                  authors,
+                  categories,
+                  pageCount,
+                  publishedDate,
+                  description,
+                  previewLink,
+                  imageLinks,
+                }}
+                id={""}
               />
             </Modal>
           )}

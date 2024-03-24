@@ -31,10 +31,10 @@ const FavoriteBooks = createSlice({
     },
 
     // ====  Delete Favorite ====
-    deleteFavorite: (state, action: PayloadAction<number>) => {
+    deleteFavorite: (state, action: PayloadAction<string>) => {
       state.books = state.books.filter((book) => book.id !== action.payload);
-      saveFavoriteBooksToLocalStorage(state.books);
     },
+
 
     // ==== Clear Favorite ====
     clearFavorite: (state) => {

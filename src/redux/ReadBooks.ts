@@ -32,7 +32,7 @@ const ReadBooks = createSlice({
     },
 
     // ====  Delete Read ====
-    deleteRead: (state, action: PayloadAction<number>) => {
+    deleteRead: (state, action: PayloadAction<string>) => {
       state.books = state.books.filter((book) => book.id !== action.payload);
       saveReadBooksToLocalStorage(state.books);
     },

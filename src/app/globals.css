@@ -1,3 +1,5 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Crimson+Text&family=Nanum+Gothic+Coding&family=PT+Serif&family=Playfair+Display&family=Slabo+27px&display=swap"); */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,6 +26,7 @@
     h3 {
       font-family: "Playfair Display", serif;
     } */
+
     .activeBtn{
         @apply bg-gray-200 text-green-600 text-xl font-semibold  
     }

@@ -75,17 +75,9 @@ const NowBooks = () => {
             <div className="grid grid-cols-2 gap-y-4 sm:flex gap-2 flex-wrap justify-center sm:justify-start items-center  w-full my-6 mb-20">
               {ReadingBooks.map((reading) => (
                 <ReadingCard
-                  key={reading?.id}
-                  id={reading?.id}
-                  title={reading?.title}
-                  subtitle={reading?.subtitle}
-                  imageLinks={reading?.imageLinks}
-                  authors={reading?.authors}
-                  categories={reading?.categories}
-                  pageCount={reading?.pageCount}
-                  description={reading?.description}
-                  publishedDate={reading?.publishedDate}
-                  previewLink={reading?.previewLink}
+                key={reading?.id}
+                id={reading?.id}
+                volumeInfo={reading?.volumeInfo}
                 />
               ))}
             </div>

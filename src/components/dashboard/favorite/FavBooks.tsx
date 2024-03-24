@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -12,14 +10,15 @@ import { Button, Popconfirm } from "antd";
 import { useSession } from "next-auth/react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import FavoriteCard from "./FavoriteCard";
+import { BookType } from "@/contexts/Types";
 
 const FavBooks = () => {
-  const FavoriteBooks = useSelector(selectFavoriteBooks);
+  const favoriteBooks = useSelector(selectFavoriteBooks)
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const router = useRouter();
 
-  const ClearBooks = () => {
+  const clearBooks = () => {
     dispatch(FavoriteBooksActions.clearFavorite());
     toast.success("Favorite List Cleared Successfully");
   };
@@ -31,10 +30,11 @@ const FavBooks = () => {
   return (
     <div className="w-full">
       <div>
-        {FavoriteBooks.length === 0 ? (
+        {favoriteBooks.length === 0 ? (
           <div className="max-w-lg mx-auto grid place-items-center py-20 gap-y-4">
             <h1 className=" text-center  text-xl font-semibold  ">
-              Your Favorite List is Empty! click on Reading Now, Have Read on the sidebar to add a book or return to the home page, Search for a
+              Your Favorite List is Empty! click on Reading Now, Have Read on
+              the sidebar to add a book or return to the home page, Search for a
               book and added it to your Favorite List
             </h1>
             <Button
@@ -59,7 +59,7 @@ const FavBooks = () => {
                     }}
                   />
                 }
-                onConfirm={ClearBooks}
+                onConfirm={clearBooks}
                 onCancel={cancel}
                 color="volcano"
                 className="text-white"
@@ -76,19 +76,11 @@ const FavBooks = () => {
               </Popconfirm>
             </div>
             <div className="grid grid-cols-2 place-items-center sm:flex gap-y-4 flex-wrap justify-center sm:justify-start items-center  w-full my-6 mb-20">
-              {FavoriteBooks.map((favorite) => (
+              {favoriteBooks.map((favorite) => (
                 <FavoriteCard
                   key={favorite?.id}
                   id={favorite?.id}
-                  title={favorite?.title}
-                  subtitle={favorite?.subtitle}
-                  imageLinks={favorite?.imageLinks}
-                  authors={favorite?.authors}
-                  categories={favorite?.categories}
-                  pageCount={favorite?.pageCount}
-                  description={favorite?.description}
-                  publishedDate={favorite?.publishedDate}
-                  previewLink={favorite?.previewLink}
+                  volumeInfo={favorite?.volumeInfo}
                 />
               ))}
             </div>

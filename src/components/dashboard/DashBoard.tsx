@@ -40,7 +40,7 @@ const DashBoard = () => {
 
   return (
     <>
-      {!session?.user ? (
+      {session?.user ? (
         <div className="cursor-pointer flex ">
           {/* ==== Tablet & Large Screens ====  */}
           <aside

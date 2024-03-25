@@ -55,7 +55,7 @@ const DashBoard = () => {
               {toggle ? (
                 <FaChevronRight className="w-4 h-4" />
               ) : (
-                <FaChevronLeft FaChevronRight className="w-4 h-4" />
+                <FaChevronLeft  className="w-4 h-4" />
               )}
             </button>
             <button className="flex items-center text-sm font-bold gap-3 lg:gap-4 mt-6 w-full px-4 overflow-hidden">

@@ -59,7 +59,7 @@ const BookInfo = ({ params }: any) => {
   const dispatch = useDispatch();
 
   const favoriteBooks = useSelector(selectFavoriteBooks);
-  const isFavorite = favoriteBooks.some((favorite) => favorite.id === id);
+  const isFavorite = favoriteBooks.some((favorite: { id: string; }) => favorite.id === id);
 
   const readingNow = useSelector(selectReadingBooks);
   const isReading = readingNow.some((reading) => reading.id === id);

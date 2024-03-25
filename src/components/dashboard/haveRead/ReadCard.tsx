@@ -246,7 +246,7 @@ const ReadCard = ({
         </div>
       </div>
       {isLoading ? (
-        <div className="title-placeholder w-36"></div>
+        <div className="title-placeholder w-40"></div>
       ) : (
         <h1 className="font-semibold text-center w-40 text-sm">{title}</h1>
       )}

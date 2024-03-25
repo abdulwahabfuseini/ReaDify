@@ -32,7 +32,7 @@ const BookDetails = ({
       {isLoading ? (
         <h1 className="text-xl font-semibold h-96">Please Wait...</h1>
       ) : (
-        <div className="grid sm:grid-cols-3 gap-y-8 gap-x-4 lg:gap-x-10 lg:place-items-center">
+        <div className="grid sm:grid-cols-3 gap-y-8 gap-x-4 lg:gap-x-10 py-6 lg:place-items-center">
           <div className="w-full h-72 sm:col-span-1 sm:h-[400px] relative order-2 sm:order-1">
             {imageLinks && imageLinks.thumbnail && (
               <Image

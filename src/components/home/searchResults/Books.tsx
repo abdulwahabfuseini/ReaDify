@@ -1,12 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { BookType } from "@/contexts/Types";
 import Image from "next/image";
 import Link from "next/link";
 
 const Books = ({ searchResult }: any) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

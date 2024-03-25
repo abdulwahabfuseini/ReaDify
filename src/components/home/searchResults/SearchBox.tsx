@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import axios from "axios";
-import Books from "./searchResults/Books";
+import Books from "./Books";
 import { BookType } from "@/contexts/Types";
 
 const PAGE_SIZE = 12;
@@ -12,7 +12,6 @@ const SearchBox = () => {
   const [sticky, setSticky] = useState(false);
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState<BookType[]>([]);
-  
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -35,26 +34,6 @@ const SearchBox = () => {
       return window.scrollY > 250 ? setSticky(true) : setSticky(false);
     });
   }, []);
-
-  // const [currentPage, setCurrentPage] = useState(1);
-
-  // const totalPages = Math.ceil(setSearchResults.length / PAGE_SIZE);
-  // const currentPageData = setSearchResults.slice(
-  //   (currentPage - 1) * PAGE_SIZE,
-  //   currentPage * PAGE_SIZE
-  // );
-
-  // const handlePageChange = (pageNumber: number) => {
-  //   setCurrentPage(pageNumber);
-  // };
-
-  // const goToPreviousPage = () => {
-  //   setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  // };
-
-  // const goToNextPage = () => {
-  //   setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
-  // };
 
 
   return (
@@ -84,12 +63,15 @@ const SearchBox = () => {
             className="px-3 py-2.5 bg-yellow-400  lg:px-8 font-semibold col-span-1 text-xl"
           >
             <FaSearch className="sm:hidden text-white" />
-            <span className="hidden sm:block text-white font-semibold"> Search</span>
+            <span className="hidden sm:block text-white font-semibold">
+              {" "}
+              Search
+            </span>
           </button>
         </form>
       </div>
       <div className="max-w-7xl  mx-auto my-28 sm:px-5">
-        <div >
+        <div>
           {searchResults.length > 0 ? (
             <div>
               <h1 className=" font-semibold text-left text-lg sm:text-xl">

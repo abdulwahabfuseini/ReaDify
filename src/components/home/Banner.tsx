@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import SearchBox from "./SearchBox";
+import SearchBox from "./searchResults/SearchBox";
 
 const Banner = () => {
   return (
@@ -19,9 +19,10 @@ const Banner = () => {
           <div className="grid place-content-center place-items-center w-full h-full">
             <h1 className="max-w-sm sm:max-w-xl mx-auto text-white text-2xl font-bold sm:text-4xl md:max-w-2xl uppercase left-10">
               Search for your Favorite book on{" "}
-              <span className="text-yellow-500">Rea<span className="text-white">dify</span></span>
+              <span className="text-yellow-500">
+                Rea<span className="text-white">dify</span>
+              </span>
             </h1>
-          
           </div>
           <SearchBox />
         </div>

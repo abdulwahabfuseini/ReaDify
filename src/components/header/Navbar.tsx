@@ -19,7 +19,7 @@ const Navbar = () => {
     <div
       className={`${
         sticky ? "top-0 left-0 fixed w-full transition-all ease-linear" : ""
-      }  sm:px-6 px-3 py-2 z-50 bg-white shadow shadow-blue-500/40`}
+      }  sm:px-6 px-4 py-2 z-50 bg-white shadow shadow-blue-500/40`}
     >
       <div className=" max-w-7xl mx-auto w-full flex items-center justify-between">
         <Link href="/">
@@ -50,7 +50,7 @@ const Navbar = () => {
               height={40}
               loading="eager"
               alt="profile"
-              className="rounded-full object-contain border-2"
+              className="rounded-full object-contain border"
             />
           )}
         </div>

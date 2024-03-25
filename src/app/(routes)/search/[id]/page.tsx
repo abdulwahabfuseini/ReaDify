@@ -74,7 +74,7 @@ const BookInfo = ({ params }: any) => {
   }, [loading]);
 
   if (loading) {
-    return <div className="max-w-7xl mx-auto py-32 text-xl font-semibold">Please Wait...</div>;
+    return <div className="max-w-7xl mx-auto py-32 text-xl font-semibold px-3 sm:px-6">Please Wait...</div>;
   }
 
   if (!book) {

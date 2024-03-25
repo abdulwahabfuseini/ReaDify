@@ -5,6 +5,7 @@ import { FaSearch } from "react-icons/fa";
 import axios from "axios";
 import Books from "./Books";
 import { BookType } from "@/contexts/Types";
+import { Input } from "antd";
 
 const PAGE_SIZE = 12;
 
@@ -51,12 +52,12 @@ const SearchBox = () => {
             sticky ? "shadow-none" : "shadow-xl"
           } flex sm:mx-auto sm:bg-white  backdrop:none sm:w-[79vw] border-2 border-yellow-400 lg:w-[50vw]`}
         >
-          <input
+          <Input
             type="search"
             placeholder="What are you looking for?"
             value={search}
             onChange={handleInputChange}
-            className="w-full px-2 sm:px-4 text-lg outline-none col-span-2 py-2.5 text-black rounded-none"
+            className="w-full px-2 sm:px-4 text-lg outline-none col-span-2 py-2.5 text-black rounded-none focus:border-yellow-500"
           />
           <button
             type="submit"

@@ -4,7 +4,7 @@ import Navbar from "@/components/header/Navbar";
 
 export const metadata: Metadata = {
   title: "Readify | Search",
-  description: "Search For Favorite Book",
+  description: "Search For Your Favorite Book",
 };
 
 export default function Home() {

@@ -6,7 +6,7 @@ import Loading from "./loading";
 
 export const metadata: Metadata = {
   title: "Readify | Search",
-  description: "Search For Favorite Book",
+  description: "Search For your Favorite Book",
 };
 
 export default function RootLayout({

@@ -1,16 +1,13 @@
-import React from 'react'
-import HaveBook from './HaveBooks'
-
+import HaveBook from "./HaveBooks";
 
 const HaveRead = () => {
   return (
     <div>
-      <h1 className='text-2xl font-semibold'>
+      <h1 className="text-2xl font-semibold">
         <HaveBook />
       </h1>
     </div>
+  );
+};
 
-  )
-}
-
-export default HaveRead
+export default HaveRead;

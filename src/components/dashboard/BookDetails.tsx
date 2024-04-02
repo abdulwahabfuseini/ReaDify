@@ -3,7 +3,6 @@
 import { BookType } from "@/contexts/Types";
 import { Typography } from "antd";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const BookDetails = ({

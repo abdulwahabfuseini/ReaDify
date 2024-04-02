@@ -15,7 +15,7 @@ const ReadBooks = createSlice({
   name: "read",
   initialState,
   reducers: {
-    // =====  Add To Read =====
+    // =====  Add To Have Read =====
     addToRead: (state, action: PayloadAction<BookType>) => {
       const newBook = action.payload;
       const existingBook = state.books.find((book) => book.id === newBook.id);
@@ -31,13 +31,13 @@ const ReadBooks = createSlice({
       saveReadBooksToLocalStorage(state.books);
     },
 
-    // ====  Delete Read ====
+    // ====  Delete Have Read ====
     deleteRead: (state, action: PayloadAction<string>) => {
       state.books = state.books.filter((book) => book.id !== action.payload);
       saveReadBooksToLocalStorage(state.books);
     },
 
-    // ==== Clear Read ====
+    // ==== Clear Have Read ====
     clearRead: (state) => {
       state.books = [];
       saveReadBooksToLocalStorage(state.books);
@@ -45,7 +45,7 @@ const ReadBooks = createSlice({
   },
 });
 
-// ==== Load Read From LocalStorage ====
+// ==== Load Have Read From LocalStorage ====
 function loadReadBooksFromLocalStorage(): BookType[] {
   if (typeof window === "undefined") {
     return [];
@@ -55,7 +55,7 @@ function loadReadBooksFromLocalStorage(): BookType[] {
   return storedReadBooks ? JSON.parse(storedReadBooks) : [];
 }
 
-// ===== Save Read To LocalStorage ====
+// ===== Save Have Read To LocalStorage ====
 function saveReadBooksToLocalStorage(read: BookType[]) {
   localStorage.setItem("read", JSON.stringify(read));
 }

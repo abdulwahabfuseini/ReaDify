@@ -63,7 +63,7 @@ const FavoriteCard = ({
       dispatch(ReadingBooksActions.deleteReading(id));
       toast.error("Book Removed from Reading Now");
     } else {
-      // Remove the book from the read list if it's already there
+      // Remove the book from the read list if it's already there at have read
       if (isRead) {
         dispatch(ReadBooksActions.deleteRead(id));
         toast.error("Book Removed from Read");
@@ -94,6 +94,7 @@ const FavoriteCard = ({
       dispatch(ReadBooksActions.deleteRead(id));
       toast.error("Book Removed from Read");
     } else {
+      // Remove the book from the read list if it's already there at reading Now
       if (isReading) {
         dispatch(ReadingBooksActions.deleteReading(id));
         toast.error("Book Removed from Reading Now");
@@ -121,11 +122,11 @@ const FavoriteCard = ({
 
   return (
     <div className="grid gap-2">
-      <div className="w-full h-44 relative mr-3">
-        {isLoading ? (
-          <div className="image-placeholder sm:w-36"></div>
-        ) : (
-          <div className=" sm:w-36 h-44 relative">
+    <div className="w-full h-44 relative">
+      {isLoading ? (
+        <div className="image-placeholder sm:w-36"></div>
+      ) : (
+        <div className=" sm:w-36 h-44 relative">
             {imageLinks && imageLinks.thumbnail && (
               <Image
                 src={imageLinks.thumbnail || "/images/pdf.png"}

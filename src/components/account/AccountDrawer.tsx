@@ -25,7 +25,6 @@ const AccountDrawer = () => {
         placement="left"
         open={openLeft}
         width={350}
-        // onClose={closeDrawerLeft}
         className="z-40 shadow-xl relative"
       >
         <UserProvider />

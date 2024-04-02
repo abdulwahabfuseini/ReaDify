@@ -34,13 +34,6 @@ const HaveBook = () => {
               Your Have Read List is Empty! Click on Favorite or Reading Now on
               the sidebar, select a book and added it to your Have Read List.
             </h1>
-            {/* <Button
-              type="primary"
-              onClick={() => router.push("/")}
-              className="bg-green-600 font-semibold text-lg h-11"
-            >
-              Return Home
-            </Button> */}
           </div>
         ) : (
           <div className="w-full">

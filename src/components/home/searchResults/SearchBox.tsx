@@ -6,7 +6,6 @@ import axios from "axios";
 import Books from "./Books";
 import { BookType } from "@/contexts/Types";
 
-const PAGE_SIZE = 12;
 
 const SearchBox = () => {
   const [sticky, setSticky] = useState(false);
@@ -42,7 +41,7 @@ const SearchBox = () => {
         className={`${
           sticky
             ? "fixed top-16 lg:top-3 shadow-blue-500/20 bg-white shadow-lg lg:shadow-none left-0 right-0 lg:bg-transparent p-3 lg:p-0 lg:left-[20vw] lg:right-[20vw] z-50  sm:mx-0 sm:flex justify-center"
-            : "absolute left-0 right-0 w-full px-3 sm:px-6 -bottom-6"
+            : "absolute left-0 right-0 w-full px-3 sm:px-6 -bottom-7"
         }`}
       >
         <form
@@ -56,11 +55,11 @@ const SearchBox = () => {
             placeholder="What are you looking for?"
             value={search}
             onChange={handleInputChange}
-            className="w-full px-2 sm:px-4 text-lg col-span-2 py-2.5 text-black rounded-none outline-none"
+            className="w-full px-2 sm:px-4 text-lg col-span-2 py-3 text-black rounded-none outline-none"
           />
           <button
             type="submit"
-            className="px-3 py-2.5 bg-yellow-400  lg:px-8 font-semibold col-span-1 text-xl"
+            className="px-3 py-3 bg-yellow-400  lg:px-8 font-semibold col-span-1 text-xl"
           >
             <FaSearch className="sm:hidden text-white" />
             <span className="hidden sm:block text-white font-semibold">

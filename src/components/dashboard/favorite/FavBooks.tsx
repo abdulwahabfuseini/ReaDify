@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -10,7 +11,6 @@ import { Button, Popconfirm } from "antd";
 import { useSession } from "next-auth/react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import FavoriteCard from "./FavoriteCard";
-import { BookType } from "@/contexts/Types";
 
 const FavBooks = () => {
   const favoriteBooks = useSelector(selectFavoriteBooks)
@@ -75,7 +75,7 @@ const FavBooks = () => {
                 </Button>
               </Popconfirm>
             </div>
-            <div className="grid grid-cols-2 place-items-center sm:flex gap-y-4 flex-wrap justify-center sm:justify-start items-center  w-full my-6 mb-20">
+            <div className="grid grid-cols-2 place-items-center sm:flex gap-y-4 gap-2 flex-wrap justify-center sm:justify-start items-center  w-full my-6 mb-20">
               {favoriteBooks.map((favorite) => (
                 <FavoriteCard
                   key={favorite?.id}

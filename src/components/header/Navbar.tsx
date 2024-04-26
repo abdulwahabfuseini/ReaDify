@@ -7,7 +7,6 @@ import { useSession } from "next-auth/react";
 
 const Navbar = () => {
   const [sticky, setSticky] = useState(false);
-  const { data: session } = useSession();
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -43,16 +42,6 @@ const Navbar = () => {
         </Link>
         <div className="flex items-center gap-3 sm:gap-6 text-lg font-bold">
           <Link href="/myBooks">My Books</Link>
-          {session?.user && (
-            <Image
-              src={session?.user?.image || ""}
-              width={40}
-              height={40}
-              loading="eager"
-              alt="profile"
-              className="rounded-full object-contain border"
-            />
-          )}
         </div>
       </div>
     </div>

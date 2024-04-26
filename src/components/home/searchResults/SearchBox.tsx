@@ -3,29 +3,13 @@
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import axios from "axios";
-import Books from "./Books";
-import { BookType } from "@/contexts/Types";
-
 
 const SearchBox = () => {
   const [sticky, setSticky] = useState(false);
   const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState<BookType[]>([]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      const response = await axios.get(
-        `https://www.googleapis.com/books/v1/volumes?q=${search}&key=AIzaSyBaLAcQXx9x97vh638_dNnDg_agsBSESDI`
-      );
-      setSearchResults(response.data.items || []);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
   };
 
   useEffect(() => {
@@ -33,7 +17,6 @@ const SearchBox = () => {
       return window.scrollY > 250 ? setSticky(true) : setSticky(false);
     });
   }, []);
-
 
   return (
     <div>
@@ -45,7 +28,6 @@ const SearchBox = () => {
         }`}
       >
         <form
-          onSubmit={handleSubmit}
           className={`${
             sticky ? "shadow-none" : "shadow-xl"
           } flex sm:mx-auto bg-white sm:w-[79vw] border-2 border-yellow-400 lg:w-[50vw]`}
@@ -69,24 +51,7 @@ const SearchBox = () => {
           </button>
         </form>
       </div>
-      <div className="max-w-7xl  mx-auto my-28 sm:px-5">
-        <div>
-          {searchResults.length > 0 ? (
-            <div>
-              <h1 className=" font-semibold text-left text-lg sm:text-xl">
-                Search Results for {search}
-              </h1>
-              <div className="grid grid-cols-2 sm:grid-auto-fit-xs gap-2 pt-6">
-                {searchResults.map((book) => (
-                  <Books key={book.id} searchResult={book} />
-                ))}
-              </div>
-            </div>
-          ) : (
-            <p className="text-xl text-left font-semibold">Search For a book</p>
-          )}
-        </div>
-      </div>
+      <div className="max-w-7xl  mx-auto my-28 sm:px-5"></div>
     </div>
   );
 };

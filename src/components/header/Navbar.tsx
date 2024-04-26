@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 
 const Navbar = () => {
   const [sticky, setSticky] = useState(false);
@@ -41,7 +40,7 @@ const Navbar = () => {
           </div>
         </Link>
         <div className="flex items-center gap-3 sm:gap-6 text-lg font-bold">
-          <Link href="/myBooks">My Books</Link>
+          My Books
         </div>
       </div>
     </div>

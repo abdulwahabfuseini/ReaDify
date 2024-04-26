@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import SearchBox from "./searchResults/SearchBox";
+import SearchBox from "./SearchBox";
 
 const Banner = () => {
   return (

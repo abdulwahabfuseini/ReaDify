@@ -3,9 +3,11 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
   const [sticky, setSticky] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -40,7 +42,17 @@ const Navbar = () => {
           </div>
         </Link>
         <div className="flex items-center gap-3 sm:gap-6 text-lg font-bold">
-          My Books
+          <Link href="/myBooks">My Books</Link>
+          {session?.user && (
+            <Image
+              src={session?.user?.image || ""}
+              width={40}
+              height={40}
+              loading="eager"
+              alt="profile"
+              className="rounded-full object-contain border"
+            />
+          )}
         </div>
       </div>
     </div>

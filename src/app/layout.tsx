@@ -22,7 +22,7 @@ export default function RootLayout({
           <Providers>
             <ToastContext />
             {children}
-            <ChatBot />
+            <ChatBot show={false} />
           </Providers>
         </Loading>
       </body>

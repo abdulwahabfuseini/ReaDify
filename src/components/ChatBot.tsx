@@ -1,39 +1,44 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { Button, Drawer, Modal, Popconfirm, Spin } from "antd";
+import { Drawer, Popconfirm } from "antd";
 import { VscSend } from "react-icons/vsc";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import TextareaAutosize from "react-textarea-autosize";
 
 interface Message {
   text: string;
   sender: "user" | "bot";
 }
 
-const ChatBot = () => {
+interface Message {
+  text: string;
+  sender: "user" | "bot";
+}
+
+interface ChatBotProps {
+  show: boolean;
+  onClose?: () => void;
+}
+
+const ChatBot = ({ show, onClose }: ChatBotProps) => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
-  const [chat, setChat] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   // const [questionCount, setQuestionCount] = useState(0);
   const { data: session } = useSession();
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  const openDrawerRight = () => {
-    if (session?.user) {
-      setChat(true);
-    } else {
-      setOpenModal(true);
-    }
-  };
-
   const closeDrawerRight = () => {
-    setChat(false);
+    if (onClose) {
+      onClose();
+    }
   };
 
   useEffect(() => {
@@ -43,6 +48,8 @@ const ChatBot = () => {
     }
   }, []);
 
+
+  // ===== Save Messages to LocalStorage =====
   const saveMessagesToStorage = (messagesToSave: Message[]) => {
     localStorage.setItem("chatMessages", JSON.stringify(messagesToSave));
   };
@@ -58,32 +65,21 @@ const ChatBot = () => {
     scrollToBottom();
   }, [messages]);
 
+  // ==== ChatBox APi and Responses ====
   const sendMessage = async () => {
     if (!question.trim()) return;
 
     setLoading(true);
     try {
+      // ===== Chat History ======
       const chatHistory = messages.map((message) => message.text).join("\n");
+
       const response = await axios.post(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyD4ks43zw7vnA0oJqiWrUmL5IRW87YRslc",
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyDYj78oyFFBbNiPx5Gsh8HGb9V1M-Gr-TU",
         {
           contents: [{ parts: [{ text: chatHistory }, { text: question }] }],
         }
       );
-
-      const words = "Bot response".split(" "); // Split the message into words
-      let typedMessage = ""; // Initialize typed message
-
-      for (let i = 0; i < words.length; i++) {
-        // Append the next word to the typed message
-        typedMessage += `${words[i]} `;
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { text: typedMessage, sender: "bot" },
-        ]);
-        // Wait for a short delay before typing the next word (adjust the delay as needed)
-        await new Promise((resolve) => setTimeout(resolve, 400));
-      }
 
       const answer = response.data.candidates[0].content.parts[0].text;
 
@@ -113,6 +109,7 @@ const ChatBot = () => {
     await sendMessage();
   };
 
+  // ==== Bolding Asterisks ====
   const renderMessageText = (text: string) => {
     // Check if the message is from the bot and contains asterisks
     if (text && text.includes("*")) {
@@ -135,6 +132,7 @@ const ChatBot = () => {
     }
   };
 
+  // ===== Clear Chats ======
   const handleClearChats = () => {
     setMessages([]);
     // setQuestionCount(0);
@@ -146,6 +144,7 @@ const ChatBot = () => {
     toast.error("You Clicked on No");
   };
 
+  //  ====== Click on Enter to Submit -=====
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -155,35 +154,19 @@ const ChatBot = () => {
 
   return (
     <div>
-      <div
-        onClick={openDrawerRight}
-        className="bottom-8 right-8 fixed shadow-md bg-white border-2 border-yellow-300 cursor-pointer p-2 rounded-full z-50"
-      >
-        <Image
-          src="/images/chatbot.png"
-          alt="chatbot"
-          width={40}
-          height={40}
-          priority
-          quality={100}
-          className="object-contain animate-bounce"
-          loading="eager"
-          unoptimized
-        />
-      </div>
       <div>
         <Drawer
           placement="right"
-          open={chat}
-          width={450}
+          open={show}
+          width={500}
           title={
             <div>
               <h1 className="text-center text-lg capitalize font-bold">
                 Hello, {session?.user?.name}
               </h1>
               <p className="text-center text-lg capitalize font-medium">
-                Interact With KU <span className=" text-yellow-400">Books</span>{" "}
-                AI
+                Interact With REA{" "}
+                <span className=" text-yellow-400 font-bold">DIFY</span> AI
               </p>
             </div>
           }
@@ -202,55 +185,84 @@ const ChatBot = () => {
                     message.sender === "user" ? "user" : "bot"
                   }`}
                 >
-                  <span className="icon">
+                  <div>
                     {message.sender === "user" ? (
-                      <div className="flex items-center gap-1.5">
-                        <Image
+                      <div className="flex gap-2 items-start">
+                        {/* <Image
                           src="/images/user.png"
                           width={32}
                           height={32}
                           alt="user"
                           objectFit="contain"
                           className="border-2 rounded-full"
+                        /> */}
+                        <img
+                          src="/images/user.png"
+                          alt="bot"
+                          className="rounded-full object-contain w-8 h-8 border-2 p-0.5"
                         />
-                        <h4 className="font-bold">You</h4>
+                        <div className="py-1">
+                          <h4 className="font-bold pb-0.5">You</h4>
+                          <p>{renderMessageText(message.text)}</p>
+                        </div>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-1.5">
-                        <Image
+                      <div className="flex gap-2 items-start">
+                        {/* <Image
                           src="/images/chatgpt2.png"
                           width={30}
                           height={30}
                           objectFit="contain"
                           alt="user"
-                          className="border-2 rounded-full p-1"
+                          className="border-2 rounded-full p-0.5"
+                        /> */}
+                        <img
+                          src="/images/chatgpt2.png"
+                          alt="user"
+                          className="rounded-full object-contain w-8 h-8 border-2 p-0.5"
                         />
-                        <h1 className="font-bold">KU Books AI</h1>
+                        <div className="py-1">
+                          <h1 className="font-bold pb-1">Readify AI</h1>
+                          {message.sender === "bot" &&
+                          index === messages.length - 1 &&
+                          loading ? (
+                            <h1 className="typing-loader"></h1>
+                          ) : (
+                            <p>{renderMessageText(message.text)}</p>
+                          )}
+                        </div>
                       </div>
                     )}
-                  </span>
-                  {renderMessageText(message.text)}
+                  </div>
                 </div>
               ))}
-              {loading && <Spin className="mb-4 text-left" />}
+              {/* {loading && <Spin className="mb-4 text-left" />} */}
             </div>
             <form
               onSubmit={handleSubmit}
-              className=" flex sm:mx-auto left-0 right-0 bottom-0 absolute bg-white border-t-2 border-yellow-400"
+              className="  sm:mx-auto left-0 right-0 py-2 px-3 sm:px-8 bottom-0 absolute bg-white border-t-2 border-yellow-400"
             >
-              <textarea
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Ask Me About a Book..."
-                className="w-full px-4 text-base col-span-2 py-3 h-14 resize-none overflow-auto rounded-none outline-none"
-              />
-              <button
-                type="submit"
-                className="py-3 px-4 bg-yellow-40 text-3xl text-center text-black font-semibold"
-              >
-                <VscSend />
-              </button>
+              <div className="flex border-2 rounded-lg items-end">
+                <TextareaAutosize
+                  ref={textareaRef}
+                  rows={2}
+                  maxRows={4}
+                  value={question}
+                  onChange={(e: { target: { value: SetStateAction<string>; }; }) => setQuestion(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  autoComplete="true"
+                  autoFocus
+                  disabled={loading}
+                  placeholder="Ask Me About a Book..."
+                  className="disabled:opacity-50 resize-none w-full bg-transparent px-3 py-2.5 text-base outline-none"
+                />
+                <button
+                  type="submit"
+                  className="py-2 px-3 bg-yellow-40 text-3xl text-center text-black font-semibold"
+                >
+                  <VscSend />
+                </button>
+              </div>
             </form>
             {/* {questionCount >= 10 && ( */}
             <Popconfirm
@@ -265,7 +277,7 @@ const ChatBot = () => {
               }
               onConfirm={handleClearChats}
               onCancel={cancel}
-              color="orange"
+              color="yellow"
               className="text-white"
               okText="Confirm"
               cancelText="Cancel"
@@ -275,13 +287,19 @@ const ChatBot = () => {
                   type="button"
                   className="absolute bottom-24 right-4 p-1.5 bg-white border-2 border-yellow-400 z-50 rounded-full"
                 >
-                  <Image
+                  {/* <Image
                     src="/images/dumpster.gif"
                     width={34}
                     height={34}
                     objectFit="contain"
                     alt="user"
                     className=" rounded-full"
+                    unoptimized
+                  /> */}
+                  <img
+                    src="/images/dumpster.gif"
+                    alt="clear"
+                    className="rounded-full object-contain w-8 h-8"
                   />
                 </button>
               )}
@@ -289,43 +307,6 @@ const ChatBot = () => {
             {/* )} */}
           </div>
         </Drawer>
-
-        <Modal
-          open={openModal}
-          closable={false}
-          width={400}
-          centered
-          footer={null}
-        >
-          <div className="grid gap-4">
-            <button
-              onClick={() => signIn("google")}
-              className="flex items-center gap-5 justify-center w-full bg-gray-50 py-2 border text-lg font-bold rounded-lg"
-            >
-              <Image
-                src="/images/googlesvg.png"
-                alt="google"
-                width={30}
-                height={30}
-                className="object-contain"
-              />
-              <h1>Continue with Google</h1>
-            </button>
-            <button
-              onClick={() => signIn("github")}
-              className="flex items-center justify-center bg-gray-50 bg-opacity-80 gap-4 py-2 border  text-lg font-bold rounded-lg"
-            >
-              <Image
-                src="/images/github.png"
-                alt="github"
-                width={36}
-                height={36}
-                className="object-contain"
-              />
-              <h1>Continue with Github</h1>
-            </button>
-          </div>
-        </Modal>
       </div>
     </div>
   );
